@@ -61,7 +61,8 @@ body {
   font-family: var(--f-body);
   background: var(--c-25);
   color: var(--c-950);
-  line-height: 1.8;
+  line-height: 1.85;
+  letter-spacing: 0.05em;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -120,7 +121,7 @@ body::before {
   border-radius: 2px;
 }
 
-h1, h2, h3 { font-family: var(--f-body); font-weight: 700; letter-spacing: -0.02em; color: var(--c-950); }
+h1, h2, h3 { font-family: var(--f-body); font-weight: 700; letter-spacing: 0.04em; color: var(--c-950); }
 
 .num { font-family: var(--f-body); font-weight: 700; }
 
@@ -622,7 +623,7 @@ section { position: relative; }
   font-size: clamp(18px, 2.4vw, 26px);
   font-weight: 700;
   margin-top: 8px;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.04em;
 }
 .day-meta {
   text-align: right;
@@ -1032,7 +1033,7 @@ section { position: relative; }
   color: var(--white); display: flex; align-items: center; justify-content: center;
 }
 .drawer-body { padding: 36px var(--gutter) 64px; }
-.drawer-body h3 { font-size: 26px; margin: 16px 0 20px; letter-spacing: -0.02em; }
+.drawer-body h3 { font-size: 26px; margin: 16px 0 20px; letter-spacing: 0.02em; }
 .drawer-body p { color: var(--c-700); font-size: 13.5px; margin-bottom: 24px; line-height: 1.9; }
 .drawer-price-box {
   background: var(--c-50); border: 1px solid var(--c-200);
