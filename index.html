@@ -15,1088 +15,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
-<style>
-/* ================================================================
-   HENGCHUN — 重設計版本 2.0
-   Hoshinoya 精品旅宿 × 日式手感 × 南國暖棕
-   Curtain Reveal · Parallax · Paper Texture · Magazine Editorial
-   ================================================================ */
+<link rel="stylesheet" href="style.css">
 
-:root {
-  /* ─── 色盤：深色系反轉（Gary's Lab 黑/金棕風格） ─── */
-  --c-950: #FEFCF9;   /* 原極深，現改為暖白 */
-  --c-900: #EDE5D8;   /* 象牙白 */
-  --c-800: #D8C8B4;   /* 亞麻白 */
-  --c-700: #C4A888;   /* 米沙 */
-  --c-600: #A8876A;   /* 沙棕 */
-  --c-500: #C89F65;   /* 金棕 (主強調色) */
-  --c-400: #6B4E38;   /* 焦糖 */
-  --c-300: #4A3225;   /* 紅棕 */
-  --c-200: #2E1F16;   /* 栗木 */
-  --c-100: #231916;   /* 深栗 */
-  --c-50:  #181210;   /* 深黑棕 */
-  --c-25:  #100C0B;   /* 極致深黑底 */
-  --teal:  #6DB3A2;   /* 亮海色 (用於點綴) */
-  --white: #FEFCF9;   /* 絕對白 */
-
-  /* ─── 字體：最多兩種 + mono ─── */
-  --f-display: 'Cormorant Garamond', 'Times New Roman', serif;
-  --f-body:    'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-  --f-mono:    'Noto Sans Mono', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
-
-  --container: 1240px;
-  --gutter: clamp(20px, 5vw, 64px);
-  --radius-s: 1px;
-  --radius-m: 2px;
-
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --dur-s: 0.4s;
-  --dur-m: 0.7s;
-  --dur-l: 1.1s;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-
-body {
-  font-family: var(--f-body);
-  background: var(--c-25);
-  color: var(--c-950);
-  line-height: 1.85;
-  letter-spacing: 0.05em;
-  font-weight: 300;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-img { display: block; max-width: 100%; }
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; background: none; border: none; cursor: pointer; color: inherit; }
-ul { list-style: none; }
-::selection { background: var(--c-700); color: var(--white); }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-.wrap { max-width: var(--container); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
-
-/* ─── 紙質感紋理 overlay ─── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.028;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 200px;
-}
-
-/* ─── 通用排版 ─── */
-.eyebrow {
-  font-family: var(--f-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.12em;
-  color: var(--c-500);
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.eyebrow::before { content: '//'; color: var(--c-400); flex-shrink: 0; }
-
-.mono-tag {
-  font-family: var(--f-mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  color: var(--c-500);
-  background: var(--c-100);
-  border: 1px solid var(--c-200);
-  padding: 3px 8px;
-  border-radius: 2px;
-}
-
-h1, h2, h3 { font-family: var(--f-body); font-weight: 700; letter-spacing: 0.04em; color: var(--c-950); }
-
-.num { font-family: var(--f-body); font-weight: 700; }
-
-/* ================================================================
-   TOP PROGRESS BAR
-   ================================================================ */
-#progress-bar {
-  position: fixed;
-  top: 0; left: 0;
-  height: 3px;
-  width: 0%;
-  background: var(--c-500);
-  z-index: 9998;
-  opacity: 0;
-  transition: width 0.1s linear, opacity 0.3s var(--ease-out);
-  pointer-events: none;
-}
-
-.btn-line {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--f-body);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding-bottom: 7px;
-  border-bottom: 1px solid var(--c-300);
-  transition: border-color 0.35s var(--ease-out), gap 0.35s var(--ease-out);
-}
-.btn-line:hover { border-color: var(--c-950); gap: 16px; }
-
-/* ================================================================
-   CURTAIN REVEAL — 布簾進場動畫
-   ================================================================ */
-.curtain-wrap {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  pointer-events: none;
-  display: flex;
-}
-.curtain-left, .curtain-right {
-  flex: 1;
-  background: var(--c-25);
-  transition: transform 1.4s cubic-bezier(0.77, 0, 0.18, 1);
-  transition-delay: 0.4s;
-  position: relative;
-}
-/* 刮痕紋理在布簾上 */
-.curtain-left::after, .curtain-right::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 3px,
-    rgba(255,255,255,0.012) 3px,
-    rgba(255,255,255,0.012) 4px
-  );
-}
-
-/* 中央 logo on curtain */
-.curtain-logo {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10001;
-  text-align: center;
-  color: var(--c-200);
-  pointer-events: none;
-  opacity: 1;
-  transition: opacity 0.4s ease;
-}
-.curtain-logo .cl-title {
-  font-family: var(--f-body);
-  font-size: clamp(28px, 5vw, 54px);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  line-height: 1;
-  color: var(--white);
-}
-.curtain-logo .cl-sub {
-  font-family: var(--f-mono);
-  font-size: 10px;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  margin-top: 14px;
-}
-.curtain-logo .cl-progress {
-  font-family: var(--f-mono);
-  font-size: 13px;
-  letter-spacing: 0.1em;
-  color: var(--c-500);
-  margin-top: 24px;
-  font-weight: 500;
-}
-.curtain-logo .cl-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(var(--c-300), transparent);
-  margin: 20px auto 0;
-  animation: curtainLinePulse 1.5s ease-in-out infinite;
-}
-@keyframes curtainLinePulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-/* 打開狀態 */
-.curtain-opened .curtain-left {
-  transform: translateX(-100%);
-}
-.curtain-opened .curtain-right {
-  transform: translateX(100%);
-}
-.curtain-opened .curtain-logo {
-  opacity: 0;
-  pointer-events: none;
-}
-.curtain-done { display: none; }
-
-/* ================================================================
-   NAV
-   ================================================================ */
-.nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 200;
-  padding: 24px var(--gutter);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: background var(--dur-m) var(--ease-out),
-              padding var(--dur-m) var(--ease-out),
-              box-shadow var(--dur-m) var(--ease-out);
-}
-.nav.scrolled {
-  background: rgba(16, 12, 11, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  padding: 16px var(--gutter);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-.nav-brand {
-  font-family: var(--f-display);
-  font-size: 16px;
-  letter-spacing: 0.22em;
-  color: var(--white);
-  font-weight: 400;
-  font-style: italic;
-  transition: color var(--dur-m) var(--ease-out);
-}
-.nav-brand span {
-  font-family: var(--f-body);
-  font-style: normal;
-  color: var(--c-300);
-  margin-left: 10px;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  font-weight: 400;
-}
-
-
-.nav-links { display: flex; gap: 40px; }
-.nav-links a {
-  font-family: var(--f-body);
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.85);
-  position: relative;
-  padding-bottom: 4px;
-  transition: color var(--dur-m) var(--ease-out);
-}
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  left: 0; bottom: 0;
-  width: 0; height: 1px;
-  background: currentColor;
-  transition: width 0.35s var(--ease-out);
-}
-.nav-links a:hover::after { width: 100%; }
-
-
-.nav-toggle { display: none; width: 28px; height: 20px; position: relative; z-index: 210; }
-.nav-toggle span { position: absolute; left: 0; right: 0; height: 1px; background: var(--white); transition: all 0.35s var(--ease-out); }
-
-.nav-toggle span:nth-child(1) { top: 0; }
-.nav-toggle span:nth-child(2) { top: 9px; width: 70%; }
-.nav-toggle span:nth-child(3) { top: 18px; }
-.nav-toggle.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-.nav-toggle.open span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
-.nav-toggle.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-
-.mobile-menu {
-  position: fixed;
-  inset: 0;
-  background: var(--c-950);
-  z-index: 190;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 32px;
-  padding: 0 var(--gutter);
-  transform: translateX(-100%);
-  transition: transform 0.6s var(--ease-out);
-}
-.mobile-menu.open { transform: translateX(0); }
-.mobile-menu a {
-  font-family: var(--f-body);
-  font-size: 28px;
-  color: var(--c-100);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-.mobile-menu .eyebrow { color: var(--c-400); margin-bottom: 10px; }
-
-/* ================================================================
-   HERO — 視差
-   ================================================================ */
-.hero {
-  position: relative;
-  height: 100svh;
-  min-height: 600px;
-  width: 100%;
-  overflow: hidden;
-  background: var(--c-950);
-}
-.hero-swiper, .hero-swiper .swiper-slide { height: 100%; width: 100%; }
-.hero-parallax-img {
-  width: 100%; height: 115%; object-fit: cover;
-  will-change: transform;
-  object-position: center; transform: translateY(0); 
-}
-.hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(23, 18, 16, 0.35) 0%,
-    rgba(23, 18, 16, 0.1) 35%,
-    rgba(23, 18, 16, 0.45) 75%,
-    rgba(23, 18, 16, 0.88) 100%
-  );
-  z-index: 2;
-  pointer-events: none;
-}
-.hero-content {
-  position: absolute; inset: 0; z-index: 3;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  color: var(--white);
-  padding: 0 24px;
-}
-.hero-eyebrow {
-  font-family: var(--f-body);
-  font-size: 10px;
-  letter-spacing: 0.38em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-  margin-bottom: 28px;
-  opacity: 0;
-  animation: fadeUp 1s var(--ease-out) 2s forwards;
-}
-.hero-title {
-  font-family: var(--f-display);
-  font-weight: 300;
-  font-style: italic;
-  font-size: clamp(60px, 12vw, 150px);
-  line-height: 0.88;
-  letter-spacing: 0.04em;
-  opacity: 0;
-  animation: fadeUp 1.2s var(--ease-out) 2.2s forwards;
-}
-.hero-sub {
-  font-family: var(--f-body);
-  font-size: clamp(14px, 2vw, 18px);
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-  margin-top: 26px;
-  font-weight: 300;
-  letter-spacing: 0.25em;
-  opacity: 0;
-  animation: fadeUp 1.2s var(--ease-out) 2.4s forwards;
-}
-.hero-divider {
-  width: 1px;
-  height: 50px;
-  background: linear-gradient(rgba(255, 255, 255, 0.6), transparent);
-  margin: 28px auto 0;
-  opacity: 0;
-  animation: fadeUp 1.2s var(--ease-out) 2.6s forwards;
-}
-.hero-tags {
-  margin-top: 20px;
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  color: rgba(255, 255, 255, 0.75);
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-  font-family: var(--f-body);
-  font-weight: 300;
-  opacity: 0;
-  animation: fadeUp 1.2s var(--ease-out) 2.8s forwards;
-}
-.hero-scroll {
-  position: absolute; bottom: 36px; left: 50%;
-  transform: translateX(-50%); z-index: 3;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 10px;
-  color: rgba(255, 255, 255, 0.7);
-  opacity: 0;
-  animation: fadeUp 1.2s var(--ease-out) 3s forwards;
-}
-.hero-scroll span { font-family: var(--f-body); font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; }
-.hero-scroll .line { width: 1px; height: 36px; background: linear-gradient(rgba(255, 255, 255, 0.6), transparent); animation: scrollLine 2.2s ease-in-out infinite; }
-
-@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes scrollLine {
-  0% { transform: scaleY(0); transform-origin: top; }
-  50% { transform: scaleY(1); transform-origin: top; }
-  51% { transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
-}
-
-/* Hero pagination — 細條樣式，更高端 */
-.hero-swiper .swiper-pagination {
-  bottom: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.hero-swiper .swiper-pagination-bullet {
-  background: var(--c-100);
-  opacity: 0.35;
-  width: 20px;
-  height: 1px;
-  border-radius: 1px;
-  margin: 0 !important;
-  transition: width 0.4s var(--ease-out), opacity 0.4s;
-}
-.hero-swiper .swiper-pagination-bullet-active {
-  opacity: 1;
-  background: var(--white);
-  width: 40px;
-}
-@media (max-width: 640px) {
-  .hero-swiper .swiper-pagination-bullet { width: 14px; }
-  .hero-swiper .swiper-pagination-bullet-active { width: 28px; }
-}
-
-/* ================================================================
-   SECTION — 通用
-   ================================================================ */
-section { position: relative; }
-.section-pad { padding: 120px 0; }
-.section-pad-sm { padding: 80px 0; }
-.section-head { max-width: 560px; margin-bottom: 70px; }
-.section-head h2 {
-  font-size: clamp(28px, 3.8vw, 44px);
-  margin-top: 20px;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-}
-.bg-alt { background: var(--c-50); border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
-.bg-dark { background: var(--c-25); border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: var(--c-900); }
-.bg-dark h1, .bg-dark h2, .bg-dark h3 { color: var(--c-950); }
-.divider { height: 1px; background: var(--c-200); width: 100%; }
-.divider-dark { height: 1px; background: rgba(255,255,255,0.1); width: 100%; }
-
-/* ================================================================
-   SCROLL REVEAL — 強化版（大幅度滑入）
-   ================================================================ */
-.reveal {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
-}
-.reveal.in { opacity: 1; transform: translateY(0); }
-
-.reveal-stag > * {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
-}
-.reveal-stag.in > * { opacity: 1; transform: translateY(0); }
-.reveal-stag.in > *:nth-child(1) { transition-delay: 0.05s; }
-.reveal-stag.in > *:nth-child(2) { transition-delay: 0.18s; }
-.reveal-stag.in > *:nth-child(3) { transition-delay: 0.31s; }
-.reveal-stag.in > *:nth-child(4) { transition-delay: 0.44s; }
-.reveal-stag.in > *:nth-child(5) { transition-delay: 0.57s; }
-.reveal-stag.in > *:nth-child(6) { transition-delay: 0.70s; }
-
-/* 圖片專屬：高級縮放揭開 */
-.reveal-img {
-  clip-path: inset(15%);
-  transform: scale(1.08);
-  opacity: 0;
-  transition: clip-path 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s;
-}
-.reveal-img.in {
-  clip-path: inset(0);
-  transform: scale(1);
-  opacity: 1;
-}
-
-/* ================================================================
-   TRIP INTRO
-   ================================================================ */
-.intro {
-  display: grid;
-  grid-template-columns: 0.92fr 1.08fr;
-  gap: clamp(40px, 7vw, 100px);
-  align-items: center;
-}
-@media (max-width: 860px) { .intro { grid-template-columns: 1fr; gap: 50px; } }
-
-.intro-media {
-  position: relative;
-  aspect-ratio: 3/4;
-  overflow: hidden;
-  border-radius: var(--radius-s);
-}
-.intro-media img { width: 100%; height: 105%; object-fit: cover; transition: transform 1.6s var(--ease-out); }
-.intro-media:hover img { transform: scale(1.04); }
-.intro-media .frame {
-  position: absolute; inset: 16px;
-  border: 1px solid rgba(250, 247, 242, 0.4);
-  pointer-events: none;
-}
-
-.intro-text .eyebrow { margin-bottom: 24px; }
-.intro-text blockquote {
-  font-family: var(--f-body);
-  font-weight: 700;
-  font-size: clamp(16px, 1.8vw, 22px);
-  line-height: 1.8;
-  color: var(--c-950);
-  margin-bottom: 30px;
-  letter-spacing: 0.02em;
-}
-.intro-text p { color: var(--c-700); font-size: 14px; max-width: 46ch; line-height: 1.9; }
-
-.intro-stats {
-  display: flex; gap: 36px;
-  margin-top: 48px;
-  padding-top: 36px;
-  border-top: 1px solid var(--c-200);
-}
-.intro-stats div b {
-  display: block;
-  font-family: var(--f-mono);
-  font-size: 38px;
-  font-weight: 500;
-  color: var(--c-800);
-  line-height: 1;
-  letter-spacing: -0.03em;
-}
-.intro-stats div span {
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--c-500);
-  font-family: var(--f-mono);
-  margin-top: 6px;
-  display: block;
-}
-
-/* ================================================================
-   TIMELINE (DAY 01 / DAY 02) — 雜誌大氣版
-   ================================================================ */
-.day-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 80px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid var(--c-200);
-}
-.day-num {
-  font-family: var(--f-body);
-  font-size: clamp(72px, 12vw, 148px);
-  font-weight: 700;
-  line-height: 0.85;
-  color: var(--c-950);
-  letter-spacing: -0.04em;
-}
-.day-label {
-  font-family: var(--f-body);
-  font-size: clamp(18px, 2.4vw, 26px);
-  font-weight: 700;
-  margin-top: 8px;
-  letter-spacing: 0.04em;
-}
-.day-meta {
-  text-align: right;
-  font-family: var(--f-body);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--c-500);
-  max-width: 240px;
-  line-height: 1.9;
-}
-.bg-alt .day-head { border-bottom-color: var(--c-200); }
-
-.timeline { display: flex; flex-direction: column; gap: 0; }
-
-.stop {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 30px;
-  padding: 60px 0;
-  border-bottom: 1px solid var(--c-200);
-}
-.stop:last-child { border-bottom: none; }
-
-@media (min-width: 900px) {
-  .stop {
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    padding: 80px 0;
-    align-items: center;
-  }
-  .stop:nth-child(even) .stop-media { order: 2; }
-  .stop:nth-child(even) .stop-info { order: 1; }
-  .stop:nth-child(even) .stop-info .tag-row { justify-content: flex-start; }
-}
-
-.stop-index-num {
-  position: absolute;
-  font-family: var(--f-display);
-  font-size: clamp(80px, 8vw, 120px);
-  font-weight: 300;
-  font-style: italic;
-  color: var(--c-400);
-  line-height: 1;
-  top: -10px;
-  right: 20px;
-  z-index: 10;
-  opacity: 0.8;
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
-  letter-spacing: -0.04em;
-  pointer-events: none;
-  user-select: none;
-}
-@media (max-width: 899px) { .stop-index-num { display: none; } }
-
-.stop-index {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  color: var(--c-500);
-}
-.tag-row { display: flex; gap: 8px; align-items: center; margin: 12px 0 18px; flex-wrap: wrap; }
-.tag {
-  font-family: var(--f-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  font-weight: 500;
-  padding: 5px 12px;
-  border: 1px solid var(--c-300);
-  border-radius: 20px;
-  color: var(--c-700);
-}
-.tag.main { background: var(--c-500); color: var(--c-25); border-color: var(--c-500); font-weight: 700; }
-.tag.optional { border-style: dashed; }
-.tag.teal { border-color: var(--teal); color: var(--teal); }
-
-.stop-info h3 {
-  font-size: clamp(22px, 2.4vw, 30px);
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  position: relative; z-index: 1;
-}
-.stop-info p {
-  color: var(--c-700);
-  font-size: 13.5px;
-  margin-top: 16px;
-  max-width: 42ch;
-  line-height: 1.9;
-  position: relative; z-index: 1;
-}
-.stop-price {
-  margin-top: 22px;
-  font-family: var(--f-body);
-  font-size: 18px;
-  color: var(--c-800);
-  letter-spacing: 0em;
-  font-weight: 400;
-  position: relative; z-index: 1;
-  line-height: 1.6;
-}
-.stop-price b {
-  font-size: 26px;
-  font-weight: 700;
-  font-family: var(--f-body);
-  color: var(--c-950);
-  font-style: normal;
-}
-.stop-cta { display: flex; margin-top: 26px; position: relative; z-index: 1; }
-
-.stop-media {
-  position: relative;
-  border-radius: var(--radius-s);
-  overflow: hidden;
-  aspect-ratio: 5/4;
-  cursor: pointer;
-  background: var(--c-200);
-}
-.stop-media .swiper { width: 100%; height: 100%; }
-.stop-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease-out); }
-.stop-media:hover img { transform: scale(1.04); }
-.stop-media .media-count {
-  position: absolute; right: 14px; bottom: 14px; z-index: 5;
-  font-family: var(--f-body); font-size: 10px; letter-spacing: 0.08em; color: var(--white);
-  background: rgba(23, 18, 16, 0.55); backdrop-filter: blur(4px);
-  padding: 5px 11px; border-radius: 20px;
-  display: flex; align-items: center; gap: 6px;
-}
-
-/* fallback 優雅卡片 */
-.media-fallback {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; gap: 12px; padding: 24px;
-  background: var(--c-50);
-  border: 1px dashed var(--c-200);
-  color: var(--c-500);
-}
-.media-fallback i { opacity: 0.5; width: 28px; height: 28px; }
-.media-fallback b { font-family: var(--f-body); font-size: 13px; color: var(--c-700); font-weight: 700; letter-spacing: 0.05em; }
-.media-fallback span { font-family: var(--f-mono); font-size: 9px; color: var(--c-400); max-width: 22ch; line-height: 1.7; letter-spacing: 0.1em; }
-
-/* ================================================================
-   PLACES — 橫向滾動畫廊 (Gary's Lab Style)
-   ================================================================ */
-.gallery-grid {
-  display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory;
-  padding-bottom: 20px;
-  padding-right: 15vw; /* 給予視覺未盡感暗示 */
-  mask-image: linear-gradient(to right, black 85%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-.gallery-grid::-webkit-scrollbar { display: none; }
-
-.g-item {
-  position: relative; overflow: hidden;
-  border-radius: var(--radius-m); cursor: pointer;
-  flex: 0 0 calc(100% - 20px);
-  scroll-snap-align: center;
-  aspect-ratio: 4/3;
-  border: 1px solid var(--c-200);
-  transition: box-shadow 0.5s var(--ease-out), border-color 0.5s var(--ease-out);
-}
-@media (min-width: 760px) { .g-item { flex: 0 0 600px; aspect-ratio: 16/10; } }
-
-.g-item:hover {
-  border-color: var(--c-500);
-  box-shadow: 0 0 40px -10px rgba(200, 159, 101, 0.15);
-}
-
-.g-item img { 
-  width: 100%; height: 100%; object-fit: cover; 
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s var(--ease-out); 
-  filter: grayscale(80%) brightness(0.6);
-}
-.g-item:hover img { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
-
-.g-item::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(0deg, rgba(16, 12, 11, 0.9) 0%, rgba(16, 12, 11, 0) 60%);
-  opacity: 0.8; transition: opacity 0.4s;
-  pointer-events: none;
-}
-.g-item:hover::after { opacity: 1; }
-
-.g-caption { position: absolute; left: 24px; right: 24px; bottom: 20px; z-index: 3; color: var(--c-950); }
-.g-caption b { font-family: var(--f-body); font-size: 18px; font-weight: 700; display: block; letter-spacing: 0.02em; color: var(--c-900); }
-.g-caption span { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--c-500); text-transform: uppercase; margin-top: 6px; display: block; }
-.g-zoom {
-  position: absolute; top: 16px; right: 16px; z-index: 3;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(16, 12, 11, 0.6); backdrop-filter: blur(4px); border: 1px solid var(--c-300);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--c-500); opacity: 0; transition: opacity 0.4s, transform 0.4s;
-  transform: scale(0.8);
-}
-.g-item:hover .g-zoom { opacity: 1; transform: scale(1); }
-
-
-/* ================================================================
-   STAY — 宇悅・木光旅居
-   ================================================================ */
-.stay-head {
-  display: flex; align-items: flex-start;
-  justify-content: space-between; gap: 30px;
-  flex-wrap: wrap; margin-bottom: 56px;
-}
-.stay-title h2 { font-size: clamp(28px, 3.8vw, 44px); }
-.stay-title p.stay-sub {
-  font-family: var(--f-body);
-  font-size: 10px; letter-spacing: 0.22em;
-  color: var(--c-400); margin-top: 12px; text-transform: uppercase;
-}
-.stay-info-list { display: flex; gap: 36px; flex-wrap: wrap; }
-.stay-info-list div { font-size: 13px; }
-.stay-info-list div label {
-  display: block; font-family: var(--f-body); font-size: 9px;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--c-400); margin-bottom: 8px;
-}
-.stay-info-list div p { color: var(--c-950); font-family: var(--f-body); font-size: 14px; font-weight: 500; letter-spacing: 0.05em; }
-
-.stay-gallery { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; }
-.stay-gallery .stay-main { position: relative; aspect-ratio: 1/1; overflow: hidden; border-radius: var(--radius-s); cursor: pointer; }
-.stay-gallery .stay-side { display: grid; grid-template-rows: repeat(2, 1fr); gap: 12px; }
-.stay-gallery .stay-side-item { position: relative; overflow: hidden; border-radius: var(--radius-s); cursor: pointer; }
-.stay-gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease-out); }
-.stay-gallery a:hover img { transform: scale(1.04); }
-@media (max-width: 759px) { .stay-gallery { grid-template-columns: 1fr; } }
-
-.stay-facil { margin-top: 48px; display: flex; gap: 12px; flex-wrap: wrap; }
-.stay-facil span {
-  font-family: var(--f-body);
-  font-size: 12.5px; letter-spacing: 0.08em;
-  color: var(--c-500);
-  border: 1px solid var(--c-300);
-  padding: 8px 18px; border-radius: 20px;
-  display: flex; align-items: center; gap: 8px;
-  font-weight: 400;
-}
-
-/* ================================================================
-   BUDGET
-   ================================================================ */
-.budget-total {
-  display: flex; flex-wrap: wrap;
-  align-items: flex-end; gap: 40px;
-  justify-content: space-between;
-  padding-bottom: 50px; margin-bottom: 50px;
-  border-bottom: 1px solid var(--c-200);
-}
-.budget-total .amt {
-  font-family: var(--f-body);
-  font-size: clamp(56px, 10vw, 104px);
-  font-weight: 700;
-  color: var(--c-950);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-}
-.budget-total .amt small { font-size: 30px; color: var(--c-500); margin-right: 4px; vertical-align: middle; font-style: normal; }
-.budget-total .label {
-  font-family: var(--f-body);
-  font-size: 9px; letter-spacing: 0.22em;
-  color: var(--c-500); text-transform: uppercase; margin-bottom: 16px;
-}
-.budget-total .people-count { display: flex; align-items: center; gap: 16px; }
-.budget-total .people-count .n {
-  font-family: var(--f-mono);
-  font-size: 44px; color: var(--c-800); font-weight: 500;
-  letter-spacing: -0.03em;
-}
-.budget-total .people-count span {
-  font-family: var(--f-body); font-size: 9px;
-  letter-spacing: 0.18em; color: var(--c-500);
-  text-transform: uppercase; max-width: 10ch; line-height: 1.6;
-}
-.budget-note-line { font-size: 12.5px; color: var(--c-500); max-width: 44ch; line-height: 1.8; }
-
-.person-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-@media (max-width: 900px) { .person-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .person-grid { grid-template-columns: 1fr; } }
-
-.person-card {
-  background: var(--c-25);
-  border: 1px solid var(--c-200);
-  border-radius: var(--radius-m);
-  padding: 32px 28px;
-  cursor: pointer;
-  transition: border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), transform 0.4s var(--ease-out);
-}
-.person-card:hover {
-  border-color: var(--c-500);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
-  transform: translateY(-4px);
-}
-.person-card-top { display: flex; align-items: center; justify-content: space-between; }
-.person-name { font-family: var(--f-body); font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
-.person-toggle {
-  width: 28px; height: 28px; border-radius: 50%;
-  border: 1px solid var(--c-300);
-  display: flex; align-items: center; justify-content: center;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s, border-color 0.3s, color 0.3s;
-  color: var(--c-500);
-}
-.person-card:hover .person-toggle {
-  border-color: var(--c-500);
-}
-.person-card.open .person-toggle {
-  transform: rotate(135deg) scale(1.1);
-  background: var(--c-500); border-color: var(--c-500); color: var(--c-25);
-}
-.person-total {
-  font-family: var(--f-mono);
-  font-size: 26px; color: var(--c-800);
-  margin-top: 16px; font-weight: 500;
-  letter-spacing: -0.02em;
-}
-.person-total span {
-  font-size: 9px; letter-spacing: 0.14em; color: var(--c-500);
-  display: block; font-family: var(--f-body); font-style: normal;
-  text-transform: uppercase; margin-top: 4px;
-}
-.person-detail {
-  max-height: 0; overflow: hidden;
-  transition: max-height 0.5s var(--ease-out), margin-top 0.5s var(--ease-out);
-}
-.person-card.open .person-detail { max-height: 420px; margin-top: 20px; }
-.person-detail-inner {
-  padding-top: 18px;
-  border-top: 1px solid var(--c-200);
-  display: flex; flex-direction: column; gap: 10px;
-}
-.p-row { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--c-700); }
-.p-row b { color: var(--c-950); font-weight: 700; font-family: var(--f-body); font-size: 13.5px; }
-
-.budget-foot { margin-top: 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-@media (max-width: 760px) { .budget-foot { grid-template-columns: 1fr; } }
-.foot-card {
-  background: var(--c-50); border: 1px solid var(--c-200);
-  padding: 34px; border-radius: var(--radius-s);
-}
-.foot-card h4 {
-  font-family: var(--f-body); font-size: 16px; font-weight: 700;
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 20px; letter-spacing: -0.01em;
-}
-.foot-card h4 i { width: 16px; height: 16px; color: var(--teal); }
-.foot-card ol, .foot-card ul { display: flex; flex-direction: column; gap: 12px; }
-.foot-card li { font-size: 13px; color: var(--c-700); padding-left: 20px; position: relative; line-height: 1.8; }
-.foot-card li::before { content: '—'; position: absolute; left: 0; color: var(--c-300); }
-.foot-card li b { color: var(--c-800); font-weight: 700; }
-
-/* ================================================================
-   FOOTER
-   ================================================================ */
-.footer { padding: 90px 0 50px; text-align: center; }
-.footer .fbrand {
-  font-family: var(--f-body);
-  font-weight: 700;
-  font-size: 28px; color: var(--white);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-.footer .fsub {
-  font-family: var(--f-body);
-  font-size: 9px; letter-spacing: 0.3em;
-  color: var(--c-400); margin-top: 14px; text-transform: uppercase;
-}
-.footer .fpower {
-  margin-top: 56px; font-size: 10px;
-  color: rgba(255, 255, 255, 0.25);
-  font-family: var(--f-body); letter-spacing: 0.08em;
-}
-
-/* ================================================================
-   DRAWER
-   ================================================================ */
-.drawer-backdrop {
-  position: fixed; inset: 0;
-  background: rgba(23, 18, 16, 0.6);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  z-index: 300;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.45s var(--ease-out);
-}
-.drawer-backdrop.open { opacity: 1; pointer-events: auto; }
-.drawer {
-  position: fixed; top: 0; right: 0; bottom: 0;
-  width: min(580px, 100%);
-  background: var(--c-25);
-  z-index: 301;
-  transform: translateX(100%);
-  transition: transform 0.6s var(--ease-out);
-  overflow-y: auto;
-}
-.drawer.open { transform: translateX(0); }
-.drawer-media { position: relative; aspect-ratio: 6/5; }
-.drawer-media .swiper { height: 100%; }
-.drawer-media img { width: 100%; height: 100%; object-fit: cover; }
-.drawer-close {
-  position: absolute; top: 20px; right: 20px; z-index: 10;
-  width: 40px; height: 40px; border-radius: 50%;
-  background: rgba(23, 18, 16, 0.5); backdrop-filter: blur(4px);
-  color: var(--white); display: flex; align-items: center; justify-content: center;
-}
-.drawer-body { padding: 36px var(--gutter) 64px; }
-.drawer-body h3 { font-size: 26px; margin: 16px 0 20px; letter-spacing: 0.02em; }
-.drawer-body p { color: var(--c-700); font-size: 13.5px; margin-bottom: 24px; line-height: 1.9; }
-.drawer-price-box {
-  background: var(--c-50); border: 1px solid var(--c-200);
-  border-radius: var(--radius-m); padding: 22px 24px; margin-bottom: 24px;
-}
-.drawer-price-box .row {
-  display: flex; justify-content: space-between;
-  font-size: 13px; padding: 8px 0; color: var(--c-500);
-}
-.drawer-price-box .row b { color: var(--c-950); font-family: var(--f-mono); font-weight: 500; font-style: normal; font-size: 15px; letter-spacing: 0.05em; }
-.drawer-price-box .row + .row { border-top: 1px dashed var(--c-300); }
-
-/* ================================================================
-   LIGHTBOX
-   ================================================================ */
-.lightbox {
-  position: fixed; inset: 0;
-  background: rgba(17, 12, 10, 0.97);
-  z-index: 400;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.4s var(--ease-out);
-}
-.lightbox.open { opacity: 1; pointer-events: auto; }
-.lightbox.open .lightbox-img-wrap { opacity: 1; transform: scale(1) translateY(0); }
-.lightbox-stage { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 70px; position: relative; }
-.lightbox-img-wrap { max-width: 1100px; max-height: 100%; width: 100%; text-align: center; opacity: 0; transform: scale(0.96) translateY(20px); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s var(--ease-out); }
-.lightbox img { max-width: 100%; max-height: 80vh; object-fit: contain; margin: 0 auto; }
-.lightbox-caption { margin-top: 24px; color: var(--c-100); }
-.lightbox-caption b { font-family: var(--f-body); font-size: 16px; font-weight: 700; display: block; }
-.lightbox-caption span { font-family: var(--f-body); font-size: 10px; letter-spacing: 0.18em; color: var(--c-400); text-transform: uppercase; }
-.lightbox-close, .lightbox-prev, .lightbox-next {
-  position: absolute; z-index: 10; color: var(--white);
-  width: 46px; height: 46px; border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.3s;
-}
-.lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.16); }
-.lightbox-close { top: 24px; right: 24px; }
-.lightbox-prev { left: 16px; top: 50%; margin-top: -23px; }
-.lightbox-next { right: 16px; top: 50%; margin-top: -23px; }
-@media (max-width: 640px) {
-  .lightbox-stage { padding: 70px 14px 30px; }
-  .lightbox-prev { left: 6px; } .lightbox-next { right: 6px; }
-}
-.lightbox-fallback { color: var(--c-200); font-family: var(--f-body); padding: 60px; text-align: center; }
-
-/* ================================================================
-   UTILITIES
-   ================================================================ */
-.container-narrow { max-width: 760px; }
-.mt-lg { margin-top: 80px; }
-.center { text-align: center; }
-
-/* 平滑 nav mobile */
-@media (max-width: 860px) {
-  .nav-links { display: none; }
-  .nav-toggle { display: block; }
-}
-</style>
+<noscript><style>.curtain-wrap { display: none !important; }</style></noscript>
 </head>
 <body>
 
@@ -1139,7 +60,7 @@ section { position: relative; }
 <!-- ============ HERO ============ -->
 <header class="hero" id="hero">
   <div class="swiper hero-swiper" id="heroSwiper">
-    <div class="swiper-wrapper" id="heroSwiperWrapper"></div>
+    <div class="swiper-wrapper" id="heroSwiperWrapper"><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Beautiful_view_of_Pingtung_coastline_from_Longpan_Park.jpg" alt="龍磐公園海岸線" class="hero-parallax-img" ></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Kenting_National_Park_Baishawan.jpg" alt="墾丁白沙灣海灘" class="hero-parallax-img" loading="lazy"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Kenting_Hengchun-Township_Taiwan_Sail-Rock-01.jpg" alt="帆船石海岸" class="hero-parallax-img" loading="lazy"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sunrise_at_low_tide_seaside_Kenting_National_Park-ID9286.jpg" alt="墾丁日出晨光" class="hero-parallax-img" loading="lazy"></div><div class="swiper-slide"><img src="pic/NMMBA1.jpg" alt="海生館魚群" class="hero-parallax-img" loading="lazy"></div><div class="swiper-slide"><img src="pic/NMMBA2.jpg" alt="海生館海底隧道" class="hero-parallax-img" loading="lazy"></div></div>
     <div class="swiper-pagination hero-dots"></div>
   </div>
   <div class="hero-overlay"></div>
@@ -1184,7 +105,127 @@ section { position: relative; }
       </div>
       <div class="day-meta">出發時間　待定<br>潛水・恐龍賽車場為主線行程<br>老街／阿嘉的家／鹿境為支線</div>
     </div>
-    <div class="timeline" id="day1Timeline"></div>
+    <div class="timeline" id="day1Timeline">
+    <div class="stop reveal" data-id="diving">
+      <div class="stop-index-num">01</div>
+      <div class="stop-media reveal-img" data-open="diving">
+    <div class="swiper" id="sw-diving">
+      <div class="swiper-wrapper"><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Kenting_coral_reef_%E5%A2%BE%E4%B8%81%E7%8F%8A%E7%91%9A%E7%A4%81.jpg" alt="潛水 墾丁珊瑚礁" loading="lazy"
+        onerror="handleStopImgError(this,'潛水')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E5%A2%BE%E4%B8%81%E7%8D%A8%E7%AB%8B%E7%A4%81%E7%9A%84%E6%B5%B7%E9%9B%9E%E5%86%A0.jpg" alt="潛水 墾丁獨立礁海雞冠軟珊瑚" loading="lazy"
+        onerror="handleStopImgError(this,'潛水')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E4%B8%83%E6%98%9F%E7%A4%81.jpg" alt="潛水 七星礁水下珊瑚礁生態" loading="lazy"
+        onerror="handleStopImgError(this,'潛水')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tomato_clownfish.jpg" alt="潛水 海葵與小丑魚" loading="lazy"
+        onerror="handleStopImgError(this,'潛水')"></div></div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="media-count"><i data-lucide="images" style="width:12px;height:12px"></i>4</div>
+  </div>
+      <div class="stop-info">
+        <div class="stop-index">Stop 01 — Scuba Diving</div>
+        <div class="tag-row">
+          <span class="tag main ">主線行程①</span>
+        </div>
+        <h3>潛水</h3>
+        <p>六人中詮／祥／榮／源選擇 2,000 元的潛水行程，嘉為 1,400 元，傑為 400 元的方案。下水前務必睡飽、不飲酒，並全程遵從教練指示。</p>
+        <div class="stop-price">詮 / 祥 / 榮 / 源 <b>$2,000／人</b>　嘉 <b>$1,400</b>　傑 <b>$400</b></div>
+        <div class="stop-cta"><button class="btn-line" data-open="diving">查看詳情 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></button></div>
+      </div>
+    </div>
+  
+    <div class="stop reveal" data-id="dinosaur-kart">
+      <div class="stop-index-num">02</div>
+      <div class="stop-media reveal-img" data-open="dinosaur-kart">
+    <div class="swiper" id="sw-dinosaur-kart">
+      <div class="swiper-wrapper"><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Outdoor_karting.jpg" alt="墾丁國際卡丁樂園 墾丁國際卡丁樂園賽道" loading="lazy"
+        onerror="handleStopImgError(this,'墾丁國際卡丁樂園')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Young_go-kart_driver.jpg" alt="墾丁國際卡丁樂園 超跑卡丁車速度體驗" loading="lazy"
+        onerror="handleStopImgError(this,'墾丁國際卡丁樂園')"></div></div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="media-count"><i data-lucide="images" style="width:12px;height:12px"></i>2</div>
+  </div>
+      <div class="stop-info">
+        <div class="stop-index">Stop 02 — Kenting International Karting</div>
+        <div class="tag-row">
+          <span class="tag main ">主線行程②</span>
+        </div>
+        <h3>墾丁國際卡丁樂園</h3>
+        <p>位於恆公路上的墾丁國際卡丁樂園，引進義大利原裝進口超跑卡丁車，搭載 Honda-GX 引擎，賽道全長 900 公尺達國際標準規格。嘉選擇不參與此行程。</p>
+        <div class="stop-price">單人超跑卡丁車（嘉不參與） <b>$350／場</b></div>
+        <div class="stop-cta"><button class="btn-line" data-open="dinosaur-kart">查看詳情 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></button></div>
+      </div>
+    </div>
+  
+    <div class="stop reveal" data-id="old-street">
+      <div class="stop-index-num">03</div>
+      <div class="stop-media reveal-img" data-open="old-street">
+    <div class="swiper" id="sw-old-street">
+      <div class="swiper-wrapper"><div class="swiper-slide"><img src="pic/old_street.jpg" alt="恆春老街 恆春小鎮夜景" loading="lazy"
+        onerror="handleStopImgError(this,'恆春老街')"></div><div class="swiper-slide"><img src="pic/old_street2.jpg" alt="恆春老街 恆春老街日景" loading="lazy"
+        onerror="handleStopImgError(this,'恆春老街')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E6%81%86%E6%98%A5%E7%B8%A3%E5%9F%8E%E5%8D%97%E9%96%80.JPG" alt="恆春老街 古城南門（曉春門）" loading="lazy"
+        onerror="handleStopImgError(this,'恆春老街')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E6%81%86%E6%98%A5%E7%B8%A3%E5%9F%8E%E5%8C%97%E9%96%80.JPG" alt="恆春老街 古城北門（拱辰門）" loading="lazy"
+        onerror="handleStopImgError(this,'恆春老街')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/City_Wall_Hengchun1.jpg" alt="恆春老街 古城城牆" loading="lazy"
+        onerror="handleStopImgError(this,'恆春老街')"></div></div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="media-count"><i data-lucide="images" style="width:12px;height:12px"></i>5</div>
+  </div>
+      <div class="stop-info">
+        <div class="stop-index">Stop 03 — Hengchun Old Street</div>
+        <div class="tag-row">
+          <span class="tag  ">支線行程</span>
+        </div>
+        <h3>恆春老街</h3>
+        <p>沿著恆春古城的城門與老街散步，磚造街屋與百年城牆是這座南國小鎮最悠緩的角落，此段行程免費。</p>
+        <div class="stop-price">費用 <b>$0</b></div>
+        <div class="stop-cta"><button class="btn-line" data-open="old-street">查看詳情 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></button></div>
+      </div>
+    </div>
+  
+    <div class="stop reveal" data-id="cape-no-7">
+      <div class="stop-index-num">04</div>
+      <div class="stop-media reveal-img" data-open="cape-no-7">
+    <div class="swiper" id="sw-cape-no-7">
+      <div class="swiper-wrapper"><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E9%98%BF%E5%98%89%E7%9A%84%E5%AE%B6.JPG" alt="海角七號・阿嘉的家 阿嘉的家外觀" loading="lazy"
+        onerror="handleStopImgError(this,'海角七號・阿嘉的家')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E6%B5%B7%E8%A7%92%E4%B8%83%E8%99%9F%E2%80%93%E9%98%BF%E5%98%89%E7%9A%84%E5%AE%B6.jpg" alt="海角七號・阿嘉的家 阿嘉的家正面" loading="lazy"
+        onerror="handleStopImgError(this,'海角七號・阿嘉的家')"></div><div class="swiper-slide"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E6%B5%B7%E8%A7%92%E4%B8%83%E5%8F%B7%E9%98%BF%E5%98%89%E7%9A%84%E5%AE%B6_-_House_of_A_Jia_-_2012.02_-_panoramio.jpg" alt="海角七號・阿嘉的家 阿嘉的家全景" loading="lazy"
+        onerror="handleStopImgError(this,'海角七號・阿嘉的家')"></div></div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="media-count"><i data-lucide="images" style="width:12px;height:12px"></i>3</div>
+  </div>
+      <div class="stop-info">
+        <div class="stop-index">Stop 04 — Cape No.7 — Aga's House</div>
+        <div class="tag-row">
+          <span class="tag  ">支線行程</span>
+        </div>
+        <h3>海角七號・阿嘉的家</h3>
+        <p>電影《海角七號》的重要拍攝場景，恆春也因這部電影成為許多影迷造訪的南國小鎮，此段行程免費。</p>
+        <div class="stop-price">費用 <b>$0</b></div>
+        <div class="stop-cta"><button class="btn-line" data-open="cape-no-7">查看詳情 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></button></div>
+      </div>
+    </div>
+  
+    <div class="stop reveal" data-id="luching">
+      <div class="stop-index-num">05</div>
+      <div class="stop-media reveal-img" data-open="luching">
+    <div class="swiper" id="sw-luching">
+      <div class="swiper-wrapper"><div class="swiper-slide"><img src="pic/deer.jpg" alt="鹿境梅花鹿生態園區 鹿境園區梅花鹿" loading="lazy"
+        onerror="handleStopImgError(this,'鹿境梅花鹿生態園區')"></div></div>
+      <div class="swiper-pagination"></div>
+    </div>
+    
+  </div>
+      <div class="stop-info">
+        <div class="stop-index">Stop 05 — Luching Deer Ecological Park</div>
+        <div class="tag-row">
+          <span class="tag  optional">支線・可去可不去</span>
+        </div>
+        <h3>鹿境梅花鹿生態園區</h3>
+        <p>近距離餵食梅花鹿的生態園區，暫抓每人 250 元，是否前往可視現場狀況彈性決定。</p>
+        <div class="stop-price">暫抓費用 <b>$250／人</b></div>
+        <div class="stop-cta"><button class="btn-line" data-open="luching">查看詳情 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></button></div>
+      </div>
+    </div>
+  </div>
   </div>
 </section>
 
@@ -1198,7 +239,30 @@ section { position: relative; }
       </div>
       <div class="day-meta">國立海洋生物博物館 為主線行程<br>預計 16:30 出發回家</div>
     </div>
-    <div class="timeline" id="day2Timeline"></div>
+    <div class="timeline" id="day2Timeline">
+    <div class="stop reveal" data-id="nmmba">
+      <div class="stop-index-num">01</div>
+      <div class="stop-media reveal-img" data-open="nmmba">
+    <div class="swiper" id="sw-nmmba">
+      <div class="swiper-wrapper"><div class="swiper-slide"><img src="pic/NMMBA1.jpg" alt="國立海洋生物博物館 大洋池魚群" loading="lazy"
+        onerror="handleStopImgError(this,'國立海洋生物博物館')"></div><div class="swiper-slide"><img src="pic/NMMBA2.jpg" alt="國立海洋生物博物館 海底隧道" loading="lazy"
+        onerror="handleStopImgError(this,'國立海洋生物博物館')"></div></div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="media-count"><i data-lucide="images" style="width:12px;height:12px"></i>2</div>
+  </div>
+      <div class="stop-info">
+        <div class="stop-index">Stop 01 — National Museum of Marine Biology & Aquarium</div>
+        <div class="tag-row">
+          <span class="tag main ">主線行程③</span>
+        </div>
+        <h3>國立海洋生物博物館</h3>
+        <p>台灣規模最大的海洋生物博物館，擁有世界級的珊瑚王國館與水族長廊；詮免費入場，其餘五人每人 450 元。</p>
+        <div class="stop-price">詮 <b>$0</b>　其餘五人 <b>$450／人</b></div>
+        <div class="stop-cta"><button class="btn-line" data-open="nmmba">查看詳情 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></button></div>
+      </div>
+    </div>
+  </div>
   </div>
 </section>
 
@@ -1209,7 +273,43 @@ section { position: relative; }
       <div class="eyebrow">Places We Visit</div>
       <h2>這趟旅程，途經的地方</h2>
     </div>
-    <div class="gallery-grid" id="galleryGrid"></div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="g-item xl" data-gallery="diving">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Kenting_coral_reef_%E5%A2%BE%E4%B8%81%E7%8F%8A%E7%91%9A%E7%A4%81.jpg" alt="潛水" loading="lazy" onerror="handleGalleryImgError(this,'潛水')">
+        <div class="g-zoom"><i data-lucide="expand" style="width:14px;height:14px"></i></div>
+        <div class="g-caption"><b>潛水</b><span>Day 01 · Scuba Diving</span></div>
+      </div>
+    
+      <div class="g-item sm" data-gallery="dinosaur-kart">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Outdoor_karting.jpg" alt="墾丁國際卡丁樂園" loading="lazy" onerror="handleGalleryImgError(this,'墾丁國際卡丁樂園')">
+        <div class="g-zoom"><i data-lucide="expand" style="width:14px;height:14px"></i></div>
+        <div class="g-caption"><b>墾丁國際卡丁樂園</b><span>Day 01 · Kenting International Karting</span></div>
+      </div>
+    
+      <div class="g-item md" data-gallery="old-street">
+        <img src="pic/old_street.jpg" alt="恆春老街" loading="lazy" onerror="handleGalleryImgError(this,'恆春老街')">
+        <div class="g-zoom"><i data-lucide="expand" style="width:14px;height:14px"></i></div>
+        <div class="g-caption"><b>恆春老街</b><span>Day 01 · Hengchun Old Street</span></div>
+      </div>
+    
+      <div class="g-item wide" data-gallery="cape-no-7">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E9%98%BF%E5%98%89%E7%9A%84%E5%AE%B6.JPG" alt="海角七號・阿嘉的家" loading="lazy" onerror="handleGalleryImgError(this,'海角七號・阿嘉的家')">
+        <div class="g-zoom"><i data-lucide="expand" style="width:14px;height:14px"></i></div>
+        <div class="g-caption"><b>海角七號・阿嘉的家</b><span>Day 01 · Cape No.7 — Aga's House</span></div>
+      </div>
+    
+      <div class="g-item md" data-gallery="luching">
+        <img src="pic/deer.jpg" alt="鹿境梅花鹿生態園區" loading="lazy" onerror="handleGalleryImgError(this,'鹿境梅花鹿生態園區')">
+        <div class="g-zoom"><i data-lucide="expand" style="width:14px;height:14px"></i></div>
+        <div class="g-caption"><b>鹿境梅花鹿生態園區</b><span>Day 01 · Luching Deer Ecological Park</span></div>
+      </div>
+    
+      <div class="g-item sm" data-gallery="nmmba">
+        <img src="pic/NMMBA1.jpg" alt="國立海洋生物博物館" loading="lazy" onerror="handleGalleryImgError(this,'國立海洋生物博物館')">
+        <div class="g-zoom"><i data-lucide="expand" style="width:14px;height:14px"></i></div>
+        <div class="g-caption"><b>國立海洋生物博物館</b><span>Day 02 · National Museum of Marine Biology & Aquarium</span></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1228,7 +328,12 @@ section { position: relative; }
         <div><label>Stay</label><p>1 晚</p></div>
       </div>
     </div>
-    <div class="stay-gallery reveal" id="stayGallery"></div>
+    <div class="stay-gallery reveal" id="stayGallery">
+    <a class="stay-main" data-gallery="stay" data-idx="0"><img src="pic/stay.jpg" alt="宇悅木光旅居" loading="lazy"></a>
+    <div class="stay-side">
+      
+    </div>
+  </div>
     <div class="stay-facil">
       <span><i data-lucide="flame"></i>戶外烤肉</span>
       <span><i data-lucide="waves"></i>戲水池</span>
@@ -1257,7 +362,73 @@ section { position: relative; }
       </div>
       <p class="budget-note-line">本表為「高標估算」，完全不含餐食費；若沒去鹿境或交通費有結餘，結算時多退少補。</p>
     </div>
-    <div class="person-grid reveal-stag" id="personGrid"></div>
+    <div class="person-grid reveal-stag" id="personGrid">
+    <div class="person-card" data-person="詮">
+      <div class="person-card-top">
+        <div class="person-name">詮</div>
+        <div class="person-toggle"><i data-lucide="plus" style="width:13px;height:13px"></i></div>
+      </div>
+      <div class="person-total">$4,857<span>Individual Total</span></div>
+      <div class="person-detail"><div class="person-detail-inner">
+        <div class="p-row"><span>潛水</span><b>$2,000</b></div><div class="p-row"><span>卡丁車</span><b>$350</b></div><div class="p-row"><span>鹿境</span><b>$250</b></div><div class="p-row"><span>海生館</span><b>$0</b></div><div class="p-row"><span>車資</span><b>$667</b></div><div class="p-row"><span>ETC</span><b>$67</b></div><div class="p-row"><span>保險</span><b>$65</b></div><div class="p-row"><span>油錢</span><b>$333</b></div><div class="p-row"><span>住宿</span><b>$1,125</b></div>
+      </div></div>
+    </div>
+  
+    <div class="person-card" data-person="祥">
+      <div class="person-card-top">
+        <div class="person-name">祥</div>
+        <div class="person-toggle"><i data-lucide="plus" style="width:13px;height:13px"></i></div>
+      </div>
+      <div class="person-total">$5,307<span>Individual Total</span></div>
+      <div class="person-detail"><div class="person-detail-inner">
+        <div class="p-row"><span>潛水</span><b>$2,000</b></div><div class="p-row"><span>卡丁車</span><b>$350</b></div><div class="p-row"><span>鹿境</span><b>$250</b></div><div class="p-row"><span>海生館</span><b>$450</b></div><div class="p-row"><span>車資</span><b>$667</b></div><div class="p-row"><span>ETC</span><b>$67</b></div><div class="p-row"><span>保險</span><b>$65</b></div><div class="p-row"><span>油錢</span><b>$333</b></div><div class="p-row"><span>住宿</span><b>$1,125</b></div>
+      </div></div>
+    </div>
+  
+    <div class="person-card" data-person="榮">
+      <div class="person-card-top">
+        <div class="person-name">榮</div>
+        <div class="person-toggle"><i data-lucide="plus" style="width:13px;height:13px"></i></div>
+      </div>
+      <div class="person-total">$5,307<span>Individual Total</span></div>
+      <div class="person-detail"><div class="person-detail-inner">
+        <div class="p-row"><span>潛水</span><b>$2,000</b></div><div class="p-row"><span>卡丁車</span><b>$350</b></div><div class="p-row"><span>鹿境</span><b>$250</b></div><div class="p-row"><span>海生館</span><b>$450</b></div><div class="p-row"><span>車資</span><b>$667</b></div><div class="p-row"><span>ETC</span><b>$67</b></div><div class="p-row"><span>保險</span><b>$65</b></div><div class="p-row"><span>油錢</span><b>$333</b></div><div class="p-row"><span>住宿</span><b>$1,125</b></div>
+      </div></div>
+    </div>
+  
+    <div class="person-card" data-person="源">
+      <div class="person-card-top">
+        <div class="person-name">源</div>
+        <div class="person-toggle"><i data-lucide="plus" style="width:13px;height:13px"></i></div>
+      </div>
+      <div class="person-total">$5,307<span>Individual Total</span></div>
+      <div class="person-detail"><div class="person-detail-inner">
+        <div class="p-row"><span>潛水</span><b>$2,000</b></div><div class="p-row"><span>卡丁車</span><b>$350</b></div><div class="p-row"><span>鹿境</span><b>$250</b></div><div class="p-row"><span>海生館</span><b>$450</b></div><div class="p-row"><span>車資</span><b>$667</b></div><div class="p-row"><span>ETC</span><b>$67</b></div><div class="p-row"><span>保險</span><b>$65</b></div><div class="p-row"><span>油錢</span><b>$333</b></div><div class="p-row"><span>住宿</span><b>$1,125</b></div>
+      </div></div>
+    </div>
+  
+    <div class="person-card" data-person="傑">
+      <div class="person-card-top">
+        <div class="person-name">傑</div>
+        <div class="person-toggle"><i data-lucide="plus" style="width:13px;height:13px"></i></div>
+      </div>
+      <div class="person-total">$4,332<span>Individual Total</span></div>
+      <div class="person-detail"><div class="person-detail-inner">
+        <div class="p-row"><span>潛水</span><b>$400</b></div><div class="p-row"><span>卡丁車</span><b>$350</b></div><div class="p-row"><span>鹿境</span><b>$250</b></div><div class="p-row"><span>海生館</span><b>$450</b></div><div class="p-row"><span>車資</span><b>$667</b></div><div class="p-row"><span>ETC</span><b>$67</b></div><div class="p-row"><span>保險</span><b>$65</b></div><div class="p-row"><span>油錢</span><b>$333</b></div><div class="p-row"><span>住宿</span><b>$1,750</b></div>
+      </div></div>
+    </div>
+  
+    <div class="person-card" data-person="嘉">
+      <div class="person-card-top">
+        <div class="person-name">嘉</div>
+        <div class="person-toggle"><i data-lucide="plus" style="width:13px;height:13px"></i></div>
+      </div>
+      <div class="person-total">$4,982<span>Individual Total</span></div>
+      <div class="person-detail"><div class="person-detail-inner">
+        <div class="p-row"><span>潛水</span><b>$1,400</b></div><div class="p-row"><span>卡丁車</span><b>$0</b></div><div class="p-row"><span>鹿境</span><b>$250</b></div><div class="p-row"><span>海生館</span><b>$450</b></div><div class="p-row"><span>車資</span><b>$667</b></div><div class="p-row"><span>ETC</span><b>$67</b></div><div class="p-row"><span>保險</span><b>$65</b></div><div class="p-row"><span>油錢</span><b>$333</b></div><div class="p-row"><span>住宿</span><b>$1,750</b></div>
+      </div></div>
+    </div>
+  </div>
     <div class="budget-foot">
       <div class="foot-card reveal">
         <h4><i data-lucide="wallet"></i>費用備註</h4>
@@ -1315,546 +486,6 @@ section { position: relative; }
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
-<script>
-/* ==================================================================
-   DATA — 行程 / 人員 / 價格 全部依據「恆春出遊行程與預算表_附潛水提醒.pdf」
-   圖片規則：
-   1. 優先使用 Wikimedia Commons Special:FilePath 可驗證圖片
-   2. 無法驗證真實對應照片的地點，一律顯示優雅 fallback
-   3. 絕對不使用其他景點照片頂替
-   ================================================================== */
-
-const WM = (name) => `https://commons.wikimedia.org/wiki/Special:FilePath/${name}`;
-
-const destinations = [
-  {
-    id: "diving",
-    title: "潛水",
-    en: "Scuba Diving",
-    day: 1,
-    tag: "主線行程①",
-    tagType: "main",
-    desc: "六人中詮／祥／榮／源選擇 2,000 元的潛水行程，嘉為 1,400 元，傑為 400 元的方案。下水前務必睡飽、不飲酒，並全程遵從教練指示。",
-    price: [
-      { label: "詮 / 祥 / 榮 / 源", value: "$2,000／人" },
-      { label: "嘉", value: "$1,400" },
-      { label: "傑", value: "$400" },
-    ],
-    note: "圖片為墾丁／恆春海域珊瑚礁真實照片（Wikimedia Commons），可反映當地海底地貌。",
-    images: [
-      { src: WM("Kenting_coral_reef_%E5%A2%BE%E4%B8%81%E7%8F%8A%E7%91%9A%E7%A4%81.jpg"), caption: "墾丁珊瑚礁" },
-      { src: WM("%E5%A2%BE%E4%B8%81%E7%8D%A8%E7%AB%8B%E7%A4%81%E7%9A%84%E6%B5%B7%E9%9B%9E%E5%86%A0.jpg"), caption: "墾丁獨立礁海雞冠軟珊瑚" },
-      { src: WM("%E4%B8%83%E6%98%9F%E7%A4%81.jpg"), caption: "七星礁水下珊瑚礁生態" },
-      { src: WM("Tomato_clownfish.jpg"), caption: "海葵與小丑魚" },
-    ],
-  },
-  {
-    id: "dinosaur-kart",
-    title: "墾丁國際卡丁樂園",
-    en: "Kenting International Karting",
-    day: 1,
-    tag: "主線行程②",
-    tagType: "main",
-    desc: "位於恆公路上的墾丁國際卡丁樂園，引進義大利原裝進口超跑卡丁車，搭載 Honda-GX 引擎，賽道全長 900 公尺達國際標準規格。嘉選擇不參與此行程。",
-    price: [
-      { label: "單人超跑卡丁車（嘉不參與）", value: "$350／場" },
-    ],
-    note: "建議提前電話確認現場等候時間，旺季人多。",
-    images: [
-      { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Outdoor_karting.jpg", caption: "墾丁國際卡丁樂園賽道" },
-      { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Young_go-kart_driver.jpg", caption: "超跑卡丁車速度體驗" },
-    ],
-  },
-  {
-    id: "old-street",
-    title: "恆春老街",
-    en: "Hengchun Old Street",
-    day: 1,
-    tag: "支線行程",
-    tagType: "optional",
-    desc: "沿著恆春古城的城門與老街散步，磚造街屋與百年城牆是這座南國小鎮最悠緩的角落，此段行程免費。",
-    price: [{ label: "費用", value: "$0" }],
-    note: "圖片為恆春古城實景照片。",
-    images: [
-      { src: "pic/old_street.jpg",  caption: "恆春小鎮夜景" },
-      { src: "pic/old_street2.jpg", caption: "恆春老街日景" },
-      { src: WM("%E6%81%86%E6%98%A5%E7%B8%A3%E5%9F%8E%E5%8D%97%E9%96%80.JPG"),   caption: "古城南門（曉春門）" },
-      { src: WM("%E6%81%86%E6%98%A5%E7%B8%A3%E5%9F%8E%E5%8D%97%E9%96%80.JPG").replace('%E5%8D%97%E9%96%80', '%E5%8C%97%E9%96%80'), caption: "古城北門（拱辰門）" },
-      { src: WM("City_Wall_Hengchun1.jpg"), caption: "古城城牆" },
-    ],
-  },
-  {
-    id: "cape-no-7",
-    title: "海角七號・阿嘉的家",
-    en: "Cape No.7 — Aga's House",
-    day: 1,
-    tag: "支線行程",
-    tagType: "optional",
-    desc: "電影《海角七號》的重要拍攝場景，恆春也因這部電影成為許多影迷造訪的南國小鎮，此段行程免費。",
-    price: [{ label: "費用", value: "$0" }],
-    note: "圖片為《海角七號》電影拍攝地「阿嘉的家」真實照片（Wikimedia Commons）。",
-    images: [
-      { src: WM("%E9%98%BF%E5%98%89%E7%9A%84%E5%AE%B6.JPG"), caption: "阿嘉的家外觀" },
-      { src: WM("%E6%B5%B7%E8%A7%92%E4%B8%83%E8%99%9F%E2%80%93%E9%98%BF%E5%98%89%E7%9A%84%E5%AE%B6.jpg"), caption: "阿嘉的家正面" },
-      { src: WM("%E6%B5%B7%E8%A7%92%E4%B8%83%E5%8F%B7%E9%98%BF%E5%98%89%E7%9A%84%E5%AE%B6_-_House_of_A_Jia_-_2012.02_-_panoramio.jpg"), caption: "阿嘉的家全景" },
-    ],
-  },
-  {
-    id: "luching",
-    title: "鹿境梅花鹿生態園區",
-    en: "Luching Deer Ecological Park",
-    day: 1,
-    tag: "支線・可去可不去",
-    tagType: "optional",
-    desc: "近距離餵食梅花鹿的生態園區，暫抓每人 250 元，是否前往可視現場狀況彈性決定。",
-    price: [{ label: "暫抓費用", value: "$250／人" }],
-    note: "圖片為鹿境梅花鹿生態園區實景照片。",
-    images: [
-      { src: "pic/deer.jpg", caption: "鹿境園區梅花鹿" },
-    ],
-  },
-  {
-    id: "nmmba",
-    title: "國立海洋生物博物館",
-    en: "National Museum of Marine Biology & Aquarium",
-    day: 2,
-    tag: "主線行程③",
-    tagType: "main",
-    desc: "台灣規模最大的海洋生物博物館，擁有世界級的珊瑚王國館與水族長廊；詮免費入場，其餘五人每人 450 元。",
-    price: [
-      { label: "詮", value: "$0" },
-      { label: "其餘五人", value: "$450／人" },
-    ],
-    note: "圖片為海生館展區真實照片。",
-    images: [
-      { src: "pic/NMMBA1.jpg", caption: "大洋池魚群" },
-      { src: "pic/NMMBA2.jpg", caption: "海底隧道" },
-    ],
-  },
-];
-
-const stay = {
-  name: "宇悅・木光旅居",
-  images: [
-    { src: "pic/stay.jpg", caption: "木光旅居全景" },
-  ],
-};
-
-// 費用表：完全依照 PDF「恆春兩天一夜．總行程與預算表」
-const people = [
-  { name:"詮", diving:2000, kart:350, deer:250, nmmba:0,   car:667, etc:67, insurance:65, gas:333, stay:1125, total:4857 },
-  { name:"祥", diving:2000, kart:350, deer:250, nmmba:450, car:667, etc:67, insurance:65, gas:333, stay:1125, total:5307 },
-  { name:"榮", diving:2000, kart:350, deer:250, nmmba:450, car:667, etc:67, insurance:65, gas:333, stay:1125, total:5307 },
-  { name:"源", diving:2000, kart:350, deer:250, nmmba:450, car:667, etc:67, insurance:65, gas:333, stay:1125, total:5307 },
-  { name:"傑", diving:400,  kart:350, deer:250, nmmba:450, car:667, etc:67, insurance:65, gas:333, stay:1750, total:4332 },
-  { name:"嘉", diving:1400, kart:0,   deer:250, nmmba:450, car:667, etc:67, insurance:65, gas:333, stay:1750, total:4982 },
-];
-const itemLabels = { diving:"潛水", kart:"卡丁車", deer:"鹿境", nmmba:"海生館", car:"車資", etc:"ETC", insurance:"保險", gas:"油錢", stay:"住宿" };
-
-/* ==================================================================
-   RENDER
-   ================================================================== */
-const fmt = n => "$" + n.toLocaleString();
-
-function mediaFallbackHTML(name) {
-  return `<div class="media-fallback">
-    <i data-lucide="image-off"></i>
-    <b>${name}</b>
-    <span>圖片暫時無法載入，尚待補上正確照片</span>
-  </div>`;
-}
-
-window.handleStopImgError = function(imgEl, name) {
-  const slide = imgEl.closest('.swiper-slide');
-  const swiper = imgEl.closest('.swiper');
-  if (slide && swiper) {
-    slide.remove();
-    if (swiper.querySelectorAll('.swiper-slide').length === 0) {
-      const target = swiper.parentElement;
-      target.outerHTML = mediaFallbackHTML(name);
-      if (window.lucide) lucide.createIcons();
-    } else if (swiper.swiper) {
-      swiper.swiper.update();
-    }
-  } else {
-    const target = imgEl.parentElement;
-    target.outerHTML = mediaFallbackHTML(name);
-    if (window.lucide) lucide.createIcons();
-  }
-};
-window.handleGalleryImgError = function(imgEl, name) {
-  imgEl.outerHTML = mediaFallbackHTML(name);
-  if (window.lucide) lucide.createIcons();
-};
-window.handleLightboxImgError = function(imgEl) {
-  const holder = imgEl.parentElement;
-  holder.innerHTML = '<div class="lightbox-fallback">圖片暫時無法載入</div>';
-};
-
-function renderStopMedia(dest) {
-  if (!dest.images || dest.images.length === 0) {
-    return mediaFallbackHTML(dest.title);
-  }
-  const swiperId = `sw-${dest.id}`;
-  const safeTitle = dest.title.replace(/'/g, "\\'");
-  let slides = dest.images.map(img =>
-    `<div class="swiper-slide"><img src="${img.src}" alt="${dest.title} ${img.caption || ''}" loading="lazy"
-        onerror="handleStopImgError(this,'${safeTitle}')"></div>`
-  ).join('');
-  return `
-    <div class="swiper" id="${swiperId}">
-      <div class="swiper-wrapper">${slides}</div>
-      <div class="swiper-pagination"></div>
-    </div>
-    ${dest.images.length > 1 ? `<div class="media-count"><i data-lucide="images" style="width:12px;height:12px"></i>${dest.images.length}</div>` : ''}
-  `;
-}
-
-function buildTimeline(dayNum, mountId) {
-  const list = destinations.filter(d => d.day === dayNum);
-  const el = document.getElementById(mountId);
-  el.innerHTML = list.map((d, i) => `
-    <div class="stop reveal" data-id="${d.id}">
-      <div class="stop-index-num">${String(i + 1).padStart(2, '0')}</div>
-      <div class="stop-media reveal-img" data-open="${d.id}">${renderStopMedia(d)}</div>
-      <div class="stop-info">
-        <div class="stop-index">Stop ${String(i + 1).padStart(2, '0')} — ${d.en}</div>
-        <div class="tag-row">
-          <span class="tag ${d.tagType === 'main' ? 'main' : ''} ${d.tagType === 'optional' && d.tag.includes('可去') ? 'optional' : ''}">${d.tag}</span>
-        </div>
-        <h3>${d.title}</h3>
-        <p>${d.desc}</p>
-        <div class="stop-price">${d.price.map(p => `${p.label} <b>${p.value}</b>`).join('　')}</div>
-        <div class="stop-cta"><button class="btn-line" data-open="${d.id}">查看詳情 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></button></div>
-      </div>
-    </div>
-  `).join('');
-}
-
-buildTimeline(1, "day1Timeline");
-buildTimeline(2, "day2Timeline");
-
-/* ---- Places gallery ---- */
-const sizeCycle = ["xl", "sm", "md", "wide", "md", "sm"];
-function buildGallery() {
-  const el = document.getElementById("galleryGrid");
-  el.innerHTML = destinations.map((d, i) => {
-    const cls = sizeCycle[i % sizeCycle.length];
-    const img = (d.images && d.images[0]) ? d.images[0] : null;
-    const safeTitle = d.title.replace(/'/g, "\\'");
-    const inner = img
-      ? `<img src="${img.src}" alt="${d.title}" loading="lazy" onerror="handleGalleryImgError(this,'${safeTitle}')">`
-      : mediaFallbackHTML(d.title);
-    return `
-      <div class="g-item ${cls}" ${img ? `data-gallery="${d.id}"` : ''}>
-        ${inner}
-        ${img ? `<div class="g-zoom"><i data-lucide="expand" style="width:14px;height:14px"></i></div>` : ''}
-        <div class="g-caption"><b>${d.title}</b><span>Day 0${d.day} · ${d.en}</span></div>
-      </div>
-    `;
-  }).join('');
-}
-buildGallery();
-
-/* ---- Stay gallery ---- */
-function buildStayGallery() {
-  const el = document.getElementById("stayGallery");
-  if (!stay.images || stay.images.length === 0) {
-    el.innerHTML = `<div style="grid-column:1/-1;">
-      <div class="media-fallback" style="position:relative; aspect-ratio:21/9; border-radius:var(--radius-s);">
-        <i data-lucide="home"></i>
-        <b style="color:var(--white)">宇悅・木光旅居</b>
-        <span style="color:var(--c-300)">尚未能於可信來源驗證此民宿的實際照片<br>暫不顯示替代圖片</span>
-      </div>
-    </div>`;
-    return;
-  }
-  const [main, ...rest] = stay.images;
-  el.innerHTML = `
-    <a class="stay-main" data-gallery="stay" data-idx="0"><img src="${main.src}" alt="宇悅木光旅居" loading="lazy"></a>
-    <div class="stay-side">
-      ${rest.slice(0, 2).map((img, i) => `<a class="stay-side-item" data-gallery="stay" data-idx="${i + 1}"><img src="${img.src}" alt="宇悅木光旅居" loading="lazy"></a>`).join('')}
-    </div>
-  `;
-}
-buildStayGallery();
-
-/* ---- Budget person cards ---- */
-function buildPersonGrid() {
-  const el = document.getElementById("personGrid");
-  el.innerHTML = people.map(p => `
-    <div class="person-card" data-person="${p.name}">
-      <div class="person-card-top">
-        <div class="person-name">${p.name}</div>
-        <div class="person-toggle"><i data-lucide="plus" style="width:13px;height:13px"></i></div>
-      </div>
-      <div class="person-total">${fmt(p.total)}<span>Individual Total</span></div>
-      <div class="person-detail"><div class="person-detail-inner">
-        ${Object.keys(itemLabels).map(k => `<div class="p-row"><span>${itemLabels[k]}</span><b>${fmt(p[k])}</b></div>`).join('')}
-      </div></div>
-    </div>
-  `).join('');
-  el.querySelectorAll('.person-card').forEach(card => {
-    card.addEventListener('click', () => card.classList.toggle('open'));
-  });
-}
-buildPersonGrid();
-
-/* ==================================================================
-   CURTAIN REVEAL — 布簾進場動畫
-   ================================================================== */
-const curtainWrap = document.getElementById('curtainWrap');
-const curtainLogo = document.getElementById('curtainLogo');
-const curtainProgress = document.getElementById('curtainProgress');
-
-function openCurtain() {
-  curtainWrap.classList.add('curtain-opened');
-  curtainLogo.style.opacity = '0';
-  curtainLogo.style.pointerEvents = 'none';
-  setTimeout(() => {
-    curtainWrap.classList.add('curtain-done');
-    curtainLogo.style.display = 'none';
-  }, 2000);
-}
-
-function startLoading() {
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += Math.floor(Math.random() * 15) + 5;
-    if (progress >= 100) {
-      progress = 100;
-      clearInterval(interval);
-      curtainProgress.innerText = '100%';
-      setTimeout(openCurtain, 400);
-    } else {
-      curtainProgress.innerText = progress.toString().padStart(2, '0') + '%';
-    }
-  }, 60);
-}
-
-// 等字體與資源載入後再跑 Loading
-if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(() => setTimeout(startLoading, 300));
-} else {
-  setTimeout(startLoading, 600);
-}
-
-/* ==================================================================
-   HERO SWIPER + PARALLAX
-   ================================================================== */
-const heroSlides = [
-  { src: WM("Beautiful_view_of_Pingtung_coastline_from_Longpan_Park.jpg"),  alt: "龍磐公園海岸線" },
-  { src: WM("Kenting_National_Park_Baishawan.jpg"),                          alt: "墾丁白沙灣海灘" },
-  { src: WM("Kenting_Hengchun-Township_Taiwan_Sail-Rock-01.jpg"),            alt: "帆船石海岸" },
-  { src: WM("Sunrise_at_low_tide_seaside_Kenting_National_Park-ID9286.jpg"), alt: "墾丁日出晨光" },
-  { src: "pic/NMMBA1.jpg",                                                   alt: "海生館魚群" },
-  { src: "pic/NMMBA2.jpg",                                                   alt: "海生館海底隧道" },
-];
-document.getElementById("heroSwiperWrapper").innerHTML = heroSlides.map((s, i) =>
-  `<div class="swiper-slide"><img src="${s.src}" alt="${s.alt}" class="hero-parallax-img" ${i === 0 ? '' : 'loading="lazy"'}></div>`
-).join('');
-
-const heroSwiper = new Swiper('#heroSwiper', {
-  loop: true,
-  effect: 'fade',
-  fadeEffect: { crossFade: true },
-  autoplay: { delay: 6500, disableOnInteraction: false, pauseOnMouseEnter: true },
-  pagination: { el: '.hero-dots', clickable: true },
-  speed: 1800,
-});
-
-// 視差滾動：Hero 圖片 (Performance optimized)
-let parallaxTicking = false;
-function updateHeroParallax() {
-  const scrollY = window.scrollY;
-  document.querySelectorAll('.hero-parallax-img').forEach(img => {
-    img.style.transform = `translateY(${scrollY * 0.35}px)`;
-  });
-  parallaxTicking = false;
-}
-window.addEventListener('scroll', () => {
-  if (!parallaxTicking) {
-    window.requestAnimationFrame(updateHeroParallax);
-    parallaxTicking = true;
-  }
-}, { passive: true });
-
-/* init all stop-media swipers */
-const swipers = [];
-document.querySelectorAll('.stop-media .swiper').forEach(elm => {
-  const sw = new Swiper(elm, {
-    loop: elm.querySelectorAll('.swiper-slide').length > 1,
-    autoplay: { delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true },
-    pagination: { el: elm.querySelector('.swiper-pagination'), clickable: true },
-    effect: 'fade',
-    fadeEffect: { crossFade: true },
-    speed: 800,
-  });
-  swipers.push(sw);
-});
-
-// Performance optimization: Stop autoplay when swiper is out of viewport
-if ('IntersectionObserver' in window) {
-  const swiperObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.target.swiper) {
-        if (entry.isIntersecting) {
-          entry.target.swiper.autoplay.start();
-        } else {
-          entry.target.swiper.autoplay.stop();
-        }
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.swiper').forEach(s => swiperObserver.observe(s));
-}
-
-/* ==================================================================
-   NAV
-   ================================================================== */
-const nav = document.getElementById('nav');
-const progressBar = document.getElementById('progress-bar');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 60);
-  
-  // 更新進度條
-  if (progressBar) {
-    const totalScroll = document.documentElement.scrollTop;
-    const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scroll = `${totalScroll / windowHeight * 100}%`;
-    progressBar.style.width = scroll;
-    progressBar.style.opacity = totalScroll > 100 ? '1' : '0';
-  }
-}, { passive: true });
-// 初始化進度條與導覽列狀態
-window.dispatchEvent(new Event('scroll'));
-
-const navToggle = document.getElementById('navToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-navToggle.addEventListener('click', () => {
-  navToggle.classList.toggle('open');
-  mobileMenu.classList.toggle('open');
-});
-mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  navToggle.classList.remove('open');
-  mobileMenu.classList.remove('open');
-}));
-
-/* ==================================================================
-   SCROLL REVEAL
-   ================================================================== */
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('in');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-document.querySelectorAll('.reveal, .reveal-stag, .reveal-img').forEach(el => revealObserver.observe(el));
-
-/* ==================================================================
-   DRAWER
-   ================================================================== */
-const drawer = document.getElementById('drawer');
-const drawerBackdrop = document.getElementById('drawerBackdrop');
-const drawerMedia = document.getElementById('drawerMedia');
-const drawerTitle = document.getElementById('drawerTitle');
-const drawerDesc = document.getElementById('drawerDesc');
-const drawerEyebrow = document.getElementById('drawerEyebrow');
-const drawerPriceBox = document.getElementById('drawerPriceBox');
-
-function openDrawer(id) {
-  const d = destinations.find(x => x.id === id);
-  if (!d) return;
-  drawerEyebrow.textContent = `Day 0${d.day} · ${d.en}`;
-  drawerTitle.textContent = d.title;
-  drawerDesc.textContent = d.desc + (d.note ? `　${d.note}` : '');
-  drawerPriceBox.innerHTML = d.price.map(p => `<div class="row"><span>${p.label}</span><b>${p.value}</b></div>`).join('');
-  drawerMedia.innerHTML = renderStopMedia(d);
-  drawer.classList.add('open');
-  drawerBackdrop.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  if (window.lucide) lucide.createIcons();
-  const sw = drawerMedia.querySelector('.swiper');
-  if (sw) new Swiper(sw, {
-    loop: sw.querySelectorAll('.swiper-slide').length > 1,
-    pagination: { el: sw.querySelector('.swiper-pagination'), clickable: true },
-    effect: 'fade', fadeEffect: { crossFade: true },
-  });
-}
-function closeDrawer() {
-  drawer.classList.remove('open');
-  drawerBackdrop.classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.addEventListener('click', (e) => {
-  const opener = e.target.closest('[data-open]');
-  if (opener) { openDrawer(opener.getAttribute('data-open')); }
-});
-document.getElementById('drawerClose').addEventListener('click', closeDrawer);
-drawerBackdrop.addEventListener('click', closeDrawer);
-
-/* ==================================================================
-   LIGHTBOX
-   ================================================================== */
-const lightbox = document.getElementById('lightbox');
-const lbImgHolder = document.getElementById('lbImgHolder');
-const lbName = document.getElementById('lbName');
-const lbSub = document.getElementById('lbSub');
-let lbSet = []; let lbIndex = 0;
-
-function openLightbox(id, startIdx = 0) {
-  let dest, imgs;
-  if (id === 'stay') { dest = stay; imgs = stay.images; }
-  else { dest = destinations.find(x => x.id === id); imgs = dest ? dest.images : []; }
-  if (!imgs || imgs.length === 0) return;
-  lbSet = imgs.map(img => ({ src: img.src, caption: img.caption || '', name: dest.title || dest.name }));
-  lbIndex = startIdx;
-  renderLightbox();
-  lightbox.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function renderLightbox() {
-  const item = lbSet[lbIndex];
-  if (!item) { lbImgHolder.innerHTML = `<div class="lightbox-fallback">圖片暫時無法載入</div>`; return; }
-  lbImgHolder.innerHTML = `<img src="${item.src}" alt="${item.name}" onerror="handleLightboxImgError(this)">`;
-  lbName.textContent = item.name;
-  lbSub.textContent = item.caption ? `${item.caption} · ${lbIndex + 1} / ${lbSet.length}` : `${lbIndex + 1} / ${lbSet.length}`;
-}
-function closeLightbox() { lightbox.classList.remove('open'); document.body.style.overflow = ''; }
-document.getElementById('lbClose').addEventListener('click', closeLightbox);
-document.getElementById('lbPrev').addEventListener('click', () => { lbIndex = (lbIndex - 1 + lbSet.length) % lbSet.length; renderLightbox(); });
-document.getElementById('lbNext').addEventListener('click', () => { lbIndex = (lbIndex + 1) % lbSet.length; renderLightbox(); });
-lightbox.addEventListener('click', (e) => { if (e.target === lightbox || e.target.classList.contains('lightbox-stage')) closeLightbox(); });
-document.addEventListener('keydown', (e) => {
-  if (!lightbox.classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') document.getElementById('lbPrev').click();
-  if (e.key === 'ArrowRight') document.getElementById('lbNext').click();
-});
-let touchStartX = null;
-lightbox.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
-lightbox.addEventListener('touchend', e => {
-  if (touchStartX === null) return;
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 50) { dx > 0 ? document.getElementById('lbPrev').click() : document.getElementById('lbNext').click(); }
-  touchStartX = null;
-});
-document.addEventListener('click', (e) => {
-  const g = e.target.closest('[data-gallery]');
-  if (g) {
-    const id = g.getAttribute('data-gallery');
-    const idx = parseInt(g.getAttribute('data-idx') || '0', 10);
-    openLightbox(id, idx);
-  }
-});
-
-/* ==================================================================
-   LUCIDE ICONS
-   ================================================================== */
-if (window.lucide) lucide.createIcons();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
