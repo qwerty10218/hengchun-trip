@@ -18,6 +18,42 @@
 <link rel="stylesheet" href="style.css">
 
 <noscript><style>.curtain-wrap { display: none !important; }</style></noscript>
+
+<script>
+window.mediaFallbackHTML = function(name) {
+  return `<div class="media-fallback">
+    <i data-lucide="image-off"></i>
+    <b>${name}</b>
+    <span>圖片暫時無法載入，尚待補上正確照片</span>
+  </div>`;
+};
+window.handleStopImgError = function(imgEl, name) {
+  const slide = imgEl.closest('.swiper-slide');
+  const swiper = imgEl.closest('.swiper');
+  if (slide && swiper) {
+    slide.remove();
+    if (swiper.querySelectorAll('.swiper-slide').length === 0) {
+      const target = swiper.parentElement;
+      target.outerHTML = window.mediaFallbackHTML(name);
+      if (window.lucide) lucide.createIcons();
+    } else if (swiper.swiper) {
+      swiper.swiper.update();
+    }
+  } else {
+    const target = imgEl.parentElement;
+    target.outerHTML = window.mediaFallbackHTML(name);
+    if (window.lucide) lucide.createIcons();
+  }
+};
+window.handleGalleryImgError = function(imgEl, name) {
+  imgEl.outerHTML = window.mediaFallbackHTML(name);
+  if (window.lucide) lucide.createIcons();
+};
+window.handleLightboxImgError = function(imgEl) {
+  const holder = imgEl.parentElement;
+  holder.innerHTML = '<div class="lightbox-fallback">圖片暫時無法載入</div>';
+};
+</script>
 </head>
 <body>
 

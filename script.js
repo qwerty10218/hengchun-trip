@@ -138,40 +138,7 @@ const itemLabels = { diving:"潛水", kart:"卡丁車", deer:"鹿境", nmmba:"�
    ================================================================== */
 const fmt = n => "$" + n.toLocaleString();
 
-function mediaFallbackHTML(name) {
-  return `<div class="media-fallback">
-    <i data-lucide="image-off"></i>
-    <b>${name}</b>
-    <span>圖片暫時無法載入，尚待補上正確照片</span>
-  </div>`;
-}
 
-window.handleStopImgError = function(imgEl, name) {
-  const slide = imgEl.closest('.swiper-slide');
-  const swiper = imgEl.closest('.swiper');
-  if (slide && swiper) {
-    slide.remove();
-    if (swiper.querySelectorAll('.swiper-slide').length === 0) {
-      const target = swiper.parentElement;
-      target.outerHTML = mediaFallbackHTML(name);
-      if (window.lucide) lucide.createIcons();
-    } else if (swiper.swiper) {
-      swiper.swiper.update();
-    }
-  } else {
-    const target = imgEl.parentElement;
-    target.outerHTML = mediaFallbackHTML(name);
-    if (window.lucide) lucide.createIcons();
-  }
-};
-window.handleGalleryImgError = function(imgEl, name) {
-  imgEl.outerHTML = mediaFallbackHTML(name);
-  if (window.lucide) lucide.createIcons();
-};
-window.handleLightboxImgError = function(imgEl) {
-  const holder = imgEl.parentElement;
-  holder.innerHTML = '<div class="lightbox-fallback">圖片暫時無法載入</div>';
-};
 
 function renderStopMedia(dest) {
   if (!dest.images || dest.images.length === 0) {
@@ -197,38 +164,11 @@ function renderStopMedia(dest) {
 
 
 /* ---- Places gallery ---- */
-const sizeCycle = ["xl", "sm", "md", "wide", "md", "sm"];
-        ${img ? `<div class="g-zoom"><i data-lucide="expand" style="width:14px;height:14px"></i></div>` : ''}
-        <div class="g-caption"><b>${d.title}</b><span>Day 0${d.day} · ${d.en}</span></div>
-      </div>
-    `;
-  }).join('');
-}
-
-
 /* ---- Stay gallery ---- */
-  const [main, ...rest] = stay.images;
-  el.innerHTML = `
-    <a class="stay-main" data-gallery="stay" data-idx="0"><img src="${main.src}" alt="宇悅木光旅居" loading="lazy"></a>
-    <div class="stay-side">
-      ${rest.slice(0, 2).map((img, i) => `<a class="stay-side-item" data-gallery="stay" data-idx="${i + 1}"><img src="${img.src}" alt="宇悅木光旅居" loading="lazy"></a>`).join('')}
-    </div>
-  `;
-}
-
-
 /* ---- Budget person cards ---- */
-
 document.querySelectorAll('.person-card').forEach(card => {
   card.addEventListener('click', () => card.classList.toggle('open'));
 });
-      </div></div>
-    </div>
-  `).join('');
-  el.querySelectorAll('.person-card').forEach(card => {
-    card.addEventListener('click', () => card.classList.toggle('open'));
-  });
-}
 
 
 /* ==================================================================
