@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" fill="#100C0B"/>
+  <!-- Sun circle -->
+  <circle cx="32" cy="22" r="7" fill="none" stroke="#C89F65" stroke-width="2"/>
+  <!-- Sun rays (4 short lines) -->
+  <line x1="32" y1="11" x2="32" y2="9"  stroke="#C89F65" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="32" y1="35" x2="32" y2="33" stroke="#C89F65" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="21" y1="22" x2="19" y2="22" stroke="#C89F65" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="45" y1="22" x2="43" y2="22" stroke="#C89F65" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="24.2" y1="14.2" x2="22.8" y2="12.8" stroke="#C89F65" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="39.8" y1="29.8" x2="41.2" y2="31.2" stroke="#C89F65" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="39.8" y1="14.2" x2="41.2" y2="12.8" stroke="#C89F65" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="24.2" y1="29.8" x2="22.8" y2="31.2" stroke="#C89F65" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Wave 1 -->
+  <path d="M10 40 Q16 36 22 40 Q28 44 34 40 Q40 36 46 40 Q52 44 54 40"
+        fill="none" stroke="#C89F65" stroke-width="2" stroke-linecap="round"/>
+  <!-- Wave 2 (lower, slightly fainter) -->
+  <path d="M10 48 Q16 44 22 48 Q28 52 34 48 Q40 44 46 48 Q52 52 54 48"
+        fill="none" stroke="#C89F65" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+</svg>
