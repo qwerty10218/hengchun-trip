@@ -263,9 +263,12 @@ function startLoading() {
   }, 60);
 }
 
-// 等字體與資源載入後再跑 Loading
+// 等字體與資源載入後再跑 Loading，並加入 3 秒強制解鎖防呆
 if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(() => setTimeout(startLoading, 300));
+  Promise.race([
+    document.fonts.ready,
+    new Promise(resolve => setTimeout(resolve, 3000))
+  ]).then(() => setTimeout(startLoading, 300));
 } else {
   setTimeout(startLoading, 600);
 }
